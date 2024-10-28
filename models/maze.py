@@ -48,9 +48,10 @@ class Maze:
         while stack:
             current = stack.pop()
             neighbours = self.__get_neighbours(self.__get_coordinate(current))
-            if [x for x in neighbours if x not in visited]:
+            unvisited_neighbours = [x for x in neighbours if x not in visited and x != -1]
+            if  unvisited_neighbours:
                 stack.append(current)
-                chosen_neighbour = random.choice(neighbours)
+                chosen_neighbour = random.choice(unvisited_neighbours)
                 self.grid[current][chosen_neighbour] = 1
                 self.grid[chosen_neighbour][current] = 1
                 stack.append(chosen_neighbour)
