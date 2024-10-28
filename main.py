@@ -29,7 +29,7 @@ def main():
 
         imgui.new_frame()
         imgui.begin("MazeSettings", flags=imgui.WINDOW_ALWAYS_AUTO_RESIZE)
-        _, maze_size = imgui.slider_int("Maze size", maze_size, 10, 20)
+        _, maze_size = imgui.slider_int("Maze size", maze_size, 10, 40)
         generated_button_clicked = imgui.button("Generate")
         imgui.end()
 
