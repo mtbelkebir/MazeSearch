@@ -1,23 +1,24 @@
-from sys import flags
-
 from imgui.integrations.pygame import PygameRenderer
 import OpenGL.GL as gl
 import imgui
 import pygame
 import sys
+from models.maze import Maze
 
 
 def main():
     pygame.init()
-    size = 800, 600
+    window_size = 1000, 1000
 
-    pygame.display.set_mode(size, pygame.DOUBLEBUF | pygame.OPENGL)
+    screen = pygame.display.set_mode(window_size, pygame.DOUBLEBUF | pygame.OPENGL | pygame.RESIZABLE)
 
     imgui.create_context()
     impl = PygameRenderer()
 
     io = imgui.get_io()
-    io.display_size = size
+    io.display_size = window_size
+    maze = Maze(17)
+    maze_size = 15
 
     while 1:
         for event in pygame.event.get():
@@ -27,20 +28,23 @@ def main():
         impl.process_inputs()
 
         imgui.new_frame()
-        imgui.begin("Maze settings")
-        imgui.text(my_label_text)
-        clicked = imgui.button("Click me !")
+        imgui.begin("MazeSettings", flags=imgui.WINDOW_ALWAYS_AUTO_RESIZE)
+        _, maze_size = imgui.slider_int("Maze size", maze_size, 10, 20)
+        generated_button_clicked = imgui.button("Generate")
         imgui.end()
 
-        # note: cannot use screen.fill((1, 1, 1)) because pygame's screen
-        #       does not support fill() on OpenGL sufraces
-        gl.glClearColor(0, 0, 0, 1)
         gl.glClear(gl.GL_COLOR_BUFFER_BIT)
+        gl.glClearColor(1, 1, 1, 1)
+        if maze is not None:
+            maze.draw(window_size)
 
         imgui.render()
         impl.render(imgui.get_draw_data())
-
         pygame.display.flip()
+        pygame.time.wait(16)
+
+        if generated_button_clicked:
+            maze = Maze(maze_size)
 
 
 if __name__ == "__main__":
