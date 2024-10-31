@@ -4,23 +4,26 @@ from OpenGL.GL import *
 from util import coords_to_glcoords
 
 class Maze:
-    def __init__(self, size=10) -> None:
-        self.size = size
-        self.length = size * size
-        self.grid = np.zeros((self.length, self.length))
+    def __init__(self, grid_length=10) -> None:
+        
+        # We suppose a square grid
+        self.grid_length = grid_length
+        # a.k.a the number of nodes
+        self.adjacency_matrix_length = grid_length * grid_length
+        self.grid = np.zeros((self.adjacency_matrix_length, self.adjacency_matrix_length))
         self.__generate_maze()
 
         
     def __get_position(self, pos: tuple[int, int]) -> int:
-        return pos[0] * self.size + pos[1]
+        return pos[0] * self.grid_length + pos[1]
     
     def __get_coordinate(self, node: int) -> tuple[int, int]:
-        x = node // self.size
-        y = node % self.size
+        x = node // self.grid_length
+        y = node % self.grid_length
         return x, y
     
     def __position_in_range(self, pos: tuple[int, int]) -> bool:
-        return pos[0] in range(0, self.size) and pos[1] in range(0, self.size)
+        return pos[0] in range(0, self.grid_length) and pos[1] in range(0, self.grid_length)
     
 
     
@@ -42,7 +45,7 @@ class Maze:
     
     def __generate_maze(self, starting_cell: int | None = None):
         if starting_cell is None:
-            starting_cell = random.randint(0, self.size - 1)
+            starting_cell = random.randint(0, self.adjacency_matrix_length - 1)
         stack = [starting_cell]
         visited = {starting_cell}
         while stack:
@@ -62,9 +65,9 @@ class Maze:
         line_thickness = 3.0
 
         screen_width, screen_height = screen_size
-        cell_size = screen_width // self.size
+        cell_size = screen_width // self.grid_length
 
-        for node in range(self.length):
+        for node in range(self.adjacency_matrix_length):
             x, y = self.__get_coordinate(node)
             neighbours = self.__get_neighbours((x, y))
             cell_x = x * cell_size
