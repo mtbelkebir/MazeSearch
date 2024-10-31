@@ -14,20 +14,20 @@ class Maze:
         self.__generate_maze()
 
         
-    def __get_position(self, pos: tuple[int, int]) -> int:
+    def get_position(self, pos: tuple[int, int]) -> int:
         return pos[0] * self.grid_length + pos[1]
     
-    def __get_coordinate(self, node: int) -> tuple[int, int]:
+    def get_coordinate(self, node: int) -> tuple[int, int]:
         x = node // self.grid_length
         y = node % self.grid_length
         return x, y
     
-    def __position_in_range(self, pos: tuple[int, int]) -> bool:
+    def position_in_range(self, pos: tuple[int, int]) -> bool:
         return pos[0] in range(0, self.grid_length) and pos[1] in range(0, self.grid_length)
     
 
     
-    def __get_neighbours(self, pos: tuple[int, int]) -> list[int]:
+    def get_neighbours(self, pos: tuple[int, int]) -> list[int]:
         """
         Returns the nodes that represent neighbours in final grid as a list. The neighbours are ordered clockwise
         Adds -1 to the list if there's nothing in a direction
@@ -62,7 +62,11 @@ class Maze:
 
     @property
     def grid(self):
-        return self.__adjacency_matrix;
+        return self.__adjacency_matrix
+
+    @property
+    def grid_length(self):
+        return self.grid_length
 
     def draw(self, screen_size: tuple[int, int]):
         wall_color = [0, 0, 0]
