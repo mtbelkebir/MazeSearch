@@ -5,12 +5,12 @@ from util import coords_to_glcoords
 
 class Maze:
     def __init__(self, grid_length=10) -> None:
-        
+
         # We suppose a square grid
         self.grid_length = grid_length
         # a.k.a the number of nodes
         self.adjacency_matrix_length = grid_length * grid_length
-        self.grid = np.zeros((self.adjacency_matrix_length, self.adjacency_matrix_length))
+        self.__adjacency_matrix = np.zeros((self.adjacency_matrix_length, self.adjacency_matrix_length))
         self.__generate_maze()
 
         
@@ -55,10 +55,14 @@ class Maze:
             if  unvisited_neighbours:
                 stack.append(current)
                 chosen_neighbour = random.choice(unvisited_neighbours)
-                self.grid[current][chosen_neighbour] = 1
-                self.grid[chosen_neighbour][current] = 1
+                self.__adjacency_matrix[current][chosen_neighbour] = 1
+                self.__adjacency_matrix[chosen_neighbour][current] = 1
                 stack.append(chosen_neighbour)
                 visited.add(chosen_neighbour)
+
+    @property
+    def grid(self):
+        return self.__adjacency_matrix;
 
     def draw(self, screen_size: tuple[int, int]):
         wall_color = [0, 0, 0]
