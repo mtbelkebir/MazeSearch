@@ -17,8 +17,8 @@ def main():
 
     io = imgui.get_io()
     io.display_size = window_size
-    maze = Maze(17)
     maze_size = 15
+    maze = Maze(maze_size)
 
     while 1:
         for event in pygame.event.get():
