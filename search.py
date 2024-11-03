@@ -35,8 +35,8 @@ def dfs(maze: Maze, node: int = 0, destination: int | None = None, visited=None)
         visited = set()
 
     neighbours = maze.get_visitable_neighbours(node)
-    unvisited_neigbours = [x for x in neighbours if x != -1 and x not in visited]
-    for n in unvisited_neigbours:
+    unvisited_neighbours = [x for x in neighbours if x != -1 and x not in visited]
+    for n in unvisited_neighbours:
         visited.add(n)
         colour_maze(maze, visited, (1000, 1000))
         dfs(maze, n, destination, visited)
