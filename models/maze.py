@@ -44,7 +44,7 @@ class Maze:
         elif isinstance(pos_or_node, int):
             if pos_or_node >= self.adjacency_matrix_length:
                 raise ValueError(f'Node {pos_or_node} is not part of the maze')
-            pos = self.get_position(pos_or_node)
+            pos = self.get_coordinate(pos_or_node)
         else:
             raise TypeError("Argument must be either a tuple (position) or an integer (node).")
 
@@ -56,6 +56,13 @@ class Maze:
                 neighbours.append(-1)
 
         return neighbours
+    
+    def get_visitable_neighbours(self, node: tuple[int, int] | int) -> list[int]:
+        neighours = self.get_neighbours(node)
+        if isinstance(node, tuple):
+            node = self.get_position(node)
+        return [x for x in neighours if x != -1 and self.__adjacency_matrix[node][x] > 0]
+
 
     def __generate_maze(self, starting_cell: int | None = None):
         if starting_cell is None:
@@ -64,7 +71,7 @@ class Maze:
         visited = {starting_cell}
         while stack:
             current = stack.pop()
-            neighbours = self.get_neighbours(self.get_coordinate(current))
+            neighbours = self.get_neighbours(current)
             unvisited_neighbours = [x for x in neighbours if x not in visited and x != -1]
             if  unvisited_neighbours:
                 stack.append(current)

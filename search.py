@@ -26,6 +26,23 @@ def bfs(maze: Maze):
     pass
 
 
+def dfs(maze: Maze, node: int = 0, destination: int | None = None, visited=None):
+    if node == destination:
+        return
+    if destination is None:
+        destination = len(maze.grid[0]) - 1
+    if visited is None:
+        visited = set()
+
+    neighbours = maze.get_visitable_neighbours(node)
+    unvisited_neigbours = [x for x in neighbours if x != -1 and x not in visited]
+    for n in unvisited_neigbours:
+        visited.add(n)
+        colour_maze(maze, visited, (1000, 1000))
+        dfs(maze, n, destination, visited)
+
+
+
 def colour_maze(maze: Maze, visited: set[int], screen_size: tuple[int, int]):
     screen_width, _ = screen_size
     cell_size = screen_width / maze.grid_length
