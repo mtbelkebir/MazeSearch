@@ -84,7 +84,7 @@ class Maze:
         line_thickness = 3.0
 
         screen_width, screen_height = screen_size
-        cell_size = screen_width // self.grid_length
+        cell_size = screen_width / self.grid_length
 
         for node in range(self.adjacency_matrix_length):
             x, y = self.get_coordinate(node)
