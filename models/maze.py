@@ -14,7 +14,7 @@ class Maze:
         self.__generate_maze()
 
         
-    def get_position(self, pos: tuple[int, int]) -> int:
+    def get_node_id(self, pos: tuple[int, int]) -> int:
         return pos[0] * self.grid_length + pos[1]
     
     def get_coordinate(self, node: int) -> tuple[int, int]:
@@ -51,7 +51,7 @@ class Maze:
         for direction in directions:
             neighbour_pos = (pos[0] + direction[0], pos[1] + direction[1])
             if self.position_in_range(neighbour_pos):
-                neighbours.append(self.get_position(neighbour_pos))
+                neighbours.append(self.get_node_id(neighbour_pos))
             else:
                 neighbours.append(-1)
 
@@ -60,7 +60,7 @@ class Maze:
     def get_visitable_neighbours(self, node: tuple[int, int] | int) -> list[int]:
         neighours = self.get_neighbours(node)
         if isinstance(node, tuple):
-            node = self.get_position(node)
+            node = self.get_node_id(node)
         return [x for x in neighours if x != -1 and self.__adjacency_matrix[node][x] > 0]
 
 
