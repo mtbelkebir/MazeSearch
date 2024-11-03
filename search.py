@@ -70,3 +70,10 @@ def colour_maze(maze: Maze, visited: set[int], screen_size: tuple[int, int]):
     maze.draw(screen_size)
     pygame.time.wait(16)
     pygame.display.flip()
+
+
+
+ALGORITHMS = {
+    "DFS": dfs,
+    "BFS": bfs
+}
