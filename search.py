@@ -27,12 +27,12 @@ def bfs(maze: Maze):
 
 
 def dfs(maze: Maze, node: int = 0, destination: int | None = None, visited=None):
-    if node == destination:
-        return
     if destination is None:
         destination = len(maze.grid[0]) - 1
     if visited is None:
         visited = set()
+    if node == destination or destination in visited:
+        return
 
     neighbours = maze.get_visitable_neighbours(node)
     unvisited_neighbours = [x for x in neighbours if x != -1 and x not in visited]
@@ -68,7 +68,7 @@ def colour_maze(maze: Maze, visited: set[int], screen_size: tuple[int, int]):
 
         gl.glEnd()
     maze.draw(screen_size)
-    pygame.time.wait(16)
+    pygame.time.wait(5)
     pygame.display.flip()
 
 
