@@ -44,6 +44,8 @@ def dfs(maze: Maze, node: int = 0, destination: int | None = None, visited=None)
 
 
 def colour_maze(maze: Maze, visited: set[int], screen_size: tuple[int, int]):
+def colour_maze(maze: Maze, visited: set[int],  path: list[int] | None = None):
+    screen_size = pygame.display.get_window_size()
     screen_width, _ = screen_size
     cell_size = screen_width / maze.grid_length
     gl.glColor3f(0.7, 0, 0.7)
@@ -67,8 +69,8 @@ def colour_maze(maze: Maze, visited: set[int], screen_size: tuple[int, int]):
         gl.glVertex2f(l4[0], l4[1])
 
         gl.glEnd()
-    maze.draw(screen_size)
-    pygame.time.wait(5)
+    maze.draw()
+    pygame.time.wait(16)
     pygame.display.flip()
 
 

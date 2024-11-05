@@ -1,7 +1,9 @@
 import numpy as np
 import random
+
 from OpenGL.GL import *
 from util import coords_to_glcoords
+import pygame
 
 class Maze:
     def __init__(self, grid_length=10) -> None:
@@ -86,10 +88,10 @@ class Maze:
         return self.__adjacency_matrix
 
 
-    def draw(self, screen_size: tuple[int, int]):
+    def draw(self):
         wall_color = [0, 0, 0]
         line_thickness = 3.0
-
+        screen_size = pygame.display.get_window_size()
         screen_width, screen_height = screen_size
         cell_size = screen_width / self.grid_length
 
