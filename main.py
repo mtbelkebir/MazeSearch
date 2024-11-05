@@ -44,7 +44,7 @@ def main():
         gl.glClear(gl.GL_COLOR_BUFFER_BIT)
         gl.glClearColor(1, 1, 1, 1)
         if maze is not None:
-            maze.draw(window_size)
+            maze.draw()
         if search_button_clicked:
             search.ALGORITHMS[supported_algorithms[supported_algorithms_selected_index]](maze)
 
