@@ -43,7 +43,19 @@ def dfs(maze: Maze, node: int = 0, destination: int | None = None, visited=None)
 
 
 
-def colour_maze(maze: Maze, visited: set[int], screen_size: tuple[int, int]):
+def __retrace_path(parents: dict[int, int]) -> list[int]:
+    starting_cell = 0
+    goal = max(list(parents.keys()))
+    path = []
+
+    current = goal
+    while current != starting_cell:
+        next = parents[current]
+        path.append(parents[current])
+        current = next
+    path.append(starting_cell)
+    return path
+
 def colour_maze(maze: Maze, visited: set[int],  path: list[int] | None = None):
     screen_size = pygame.display.get_window_size()
     screen_width, _ = screen_size
