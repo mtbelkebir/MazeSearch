@@ -66,6 +66,7 @@ def __retrace_path(parents: dict[int, int]) -> list[int]:
         path.append(parents[current])
         current = next
     path.append(starting_cell)
+    path.reverse()
     return path
 
 # TODO : Optimiser la routine en n'affichant que les nouveaux nœuds visités au lieu de TOUT les nœuds visités
