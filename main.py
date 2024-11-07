@@ -46,7 +46,9 @@ def main():
         if maze is not None:
             maze.draw()
         if search_button_clicked:
-            search.ALGORITHMS[supported_algorithms[supported_algorithms_selected_index]](maze)
+            visited, solution = search.ALGORITHMS[supported_algorithms[supported_algorithms_selected_index]](maze)
+            search.draw_visited(maze, visited)
+            search.draw_path(maze, solution)
 
         imgui.render()
         impl.render(imgui.get_draw_data())
