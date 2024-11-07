@@ -1,4 +1,4 @@
-def coords_to_glcoords(coords: tuple[int, int], screen_size: tuple[int, int]) -> tuple[float, float]:
+def coords_to_glcoords(coords: tuple[float, float], screen_size: tuple[float, float]) -> tuple[float, float]:
     """
     :param coords:
     :param screen_size:
