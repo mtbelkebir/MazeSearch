@@ -16,15 +16,18 @@ def bfs(maze: Maze):
     while queue:
         current = queue.popleft()
         if current == destination_cell:
-            return
+            break
  
         neighbours = maze.get_visitable_neighbours(current)
         unvisited_neigbours = [x for x in neighbours if x != -1 and x not in visited]
         for n in unvisited_neigbours:
             visited.add(n)
+            visited_list.append(n)
+            parents[n] = current
             queue.append(n)
-        colour_maze(maze, visited, screen_size=(1000, 1000))
-    pass
+    path = __retrace_path(parents)
+    draw_visited(maze, visited_list)
+    draw_path(maze, path)
 
 
 def dfs(maze: Maze, node: int = 0, destination: int | None = None, visited=None):
@@ -57,7 +60,6 @@ def __retrace_path(parents: dict[int, int]) -> list[int]:
     path.append(starting_cell)
     return path
 
-def colour_maze(maze: Maze, visited: set[int],  path: list[int] | None = None):
 # TODO : Optimiser la routine en n'affichant que les nouveaux nœuds visités au lieu de TOUT les nœuds visités
 def fill_cells(maze: Maze, cells: set[int] | list[int], color: tuple[float, float, float], delay=16):
     screen_size = pygame.display.get_window_size()
