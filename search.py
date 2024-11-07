@@ -1,3 +1,5 @@
+from queue import PriorityQueue
+
 from models.maze import Maze
 from collections import deque
 import OpenGL.GL as gl
@@ -60,6 +62,27 @@ def dfs(maze: Maze, node: int = 0,
             return result
 
 
+def ucs(maze: Maze):
+    node = 0
+    pq = PriorityQueue()
+    pq.put((0, node))
+    destination = len(maze.grid[0]) - 1
+    cumulated_cost = 0
+    visited = {node}
+    visited_list = [node]
+    while pq:
+        node = pq.get()[1]
+        cumulated_cost += 1
+        visited.add(node)
+        visited_list.append(node)
+        if node == destination:
+            return visited_list, []
+        neighbours = maze.get_visitable_neighbours(node)
+        for n in neighbours:
+            if n not in visited and n not in pq.queue:
+                pq.put((cumulated_cost + 1, n))
+
+
 
 def __retrace_path(parents: dict[int, int]) -> list[int]:
     starting_cell = 0
@@ -120,5 +143,6 @@ def draw_visited(maze: Maze, visited: set[int] | list[int]):
 
 ALGORITHMS = {
     "DFS": lambda maze: dfs(maze),
-    "BFS": lambda maze: bfs(maze)
+    "BFS": lambda maze: bfs(maze),
+    "UCS": lambda maze: ucs(maze),
 }
