@@ -113,6 +113,6 @@ def draw_visited(maze: Maze, visited: set[int] | list[int]):
 
 
 ALGORITHMS = {
-    "DFS": dfs,
-    "BFS": bfs
+    "DFS": lambda maze: dfs(maze),
+    "BFS": lambda maze: bfs(maze)
 }
