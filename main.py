@@ -48,7 +48,8 @@ def main():
         if search_button_clicked:
             visited, solution = search.ALGORITHMS[supported_algorithms[supported_algorithms_selected_index]](maze)
             search.draw_visited(maze, visited)
-            search.draw_path(maze, solution)
+            if solution is not None:
+                search.draw_path(maze, solution)
 
         imgui.render()
         impl.render(imgui.get_draw_data())
