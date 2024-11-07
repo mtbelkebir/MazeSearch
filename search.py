@@ -30,20 +30,28 @@ def bfs(maze: Maze):
     draw_path(maze, path)
 
 
-def dfs(maze: Maze, node: int = 0, destination: int | None = None, visited=None):
+def dfs(maze: Maze, node: int = 0, destination: int | None = None, visited=None, visited_list=None, parents=None):
+    if parents is None:
+        parents = {}
+    if visited_list is None:
+        visited_list = [node]
     if destination is None:
         destination = len(maze.grid[0]) - 1
     if visited is None:
-        visited = set()
-    if node == destination or destination in visited:
+        visited = {node}
+
+    if node == destination:
+        draw_visited(maze, visited_list)
+        draw_path(maze, __retrace_path(parents))
         return
 
     neighbours = maze.get_visitable_neighbours(node)
     unvisited_neighbours = [x for x in neighbours if x != -1 and x not in visited]
     for n in unvisited_neighbours:
         visited.add(n)
-        colour_maze(maze, visited, (1000, 1000))
-        dfs(maze, n, destination, visited)
+        visited_list.append(n)
+        parents[n] = node
+        dfs(maze, n, destination, visited, visited_list, parents)
 
 
 
