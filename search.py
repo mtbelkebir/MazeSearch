@@ -19,8 +19,8 @@ def bfs(maze: Maze):
             break
  
         neighbours = maze.get_visitable_neighbours(current)
-        unvisited_neigbours = [x for x in neighbours if x != -1 and x not in visited]
-        for n in unvisited_neigbours:
+        unvisited_neighbours = [x for x in neighbours if x != -1 and x not in visited]
+        for n in unvisited_neighbours:
             visited.add(n)
             visited_list.append(n)
             parents[n] = current
