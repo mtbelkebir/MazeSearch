@@ -29,7 +29,11 @@ def bfs(maze: Maze) -> tuple[list[int], list[int]]:
     return visited_list, path
 
 
-def dfs(maze: Maze, node: int = 0, destination: int | None = None, visited: set[int] | None =None, visited_list: int | None =None, parents: dict[int,int] | None=None) -> tuple[list[int], list[int]]:
+def dfs(maze: Maze, node: int = 0,
+        destination: int  | None= None,
+        visited: set[int] | None= None,
+        visited_list: int | None= None,
+        parents: dict[int,int] | None=None) -> tuple[list[int],list[int]]:
     if parents is None:
         parents = {}
     if visited_list is None:
