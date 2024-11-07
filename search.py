@@ -1,3 +1,4 @@
+from operator import truediv
 from queue import PriorityQueue
 
 from models.maze import Maze
@@ -35,7 +36,8 @@ def dfs(maze: Maze, node: int = 0,
         destination: int  | None= None,
         visited: set[int] | None= None,
         visited_list: int | None= None,
-        parents: dict[int,int] | None=None) -> tuple[list[int],list[int]]:
+        parents: dict[int,int] | None=None,
+        max_depth: int | None = None) -> tuple[list[int] | None,list[int] | None]:
     if parents is None:
         parents = {}
     if visited_list is None:
@@ -49,13 +51,19 @@ def dfs(maze: Maze, node: int = 0,
         path = __retrace_path(parents)
         return visited_list, path
 
+    if max_depth is not None:
+        if max_depth <= 0:
+            return visited_list, None
+        else:
+            max_depth -= 1
+
     neighbours = maze.get_visitable_neighbours(node)
     unvisited_neighbours = [x for x in neighbours if x != -1 and x not in visited]
     for n in unvisited_neighbours:
         visited.add(n)
         visited_list.append(n)
         parents[n] = node
-        result = dfs(maze, n, destination, visited, visited_list, parents)
+        result = dfs(maze, n, destination, visited, visited_list, parents, max_depth)
 
         # To propagate the solution found in case we call and don't find it
         if result is not None:
@@ -84,6 +92,15 @@ def ucs(maze: Maze):
             if n not in visited and n not in pq.queue:
                 parents[n] = node
                 pq.put((cumulated_cost + 1, n))
+
+
+def idfs(maze: Maze, max_depth: int | None = None, min_depth: int = 10):
+    if max_depth is None:
+        max_depth = maze.adjacency_matrix_length # So I guess none ?
+    for depth in range(min_depth, max_depth, 5):
+        r = dfs(maze, max_depth=depth)
+        if r is not None:
+            return r
 
 
 
@@ -148,4 +165,5 @@ ALGORITHMS = {
     "DFS": lambda maze: dfs(maze),
     "BFS": lambda maze: bfs(maze),
     "UCS": lambda maze: ucs(maze),
+    "IDFS": lambda maze: idfs(maze),
 }
