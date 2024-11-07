@@ -37,7 +37,7 @@ def dfs(maze: Maze, node: int = 0,
         visited: set[int] | None= None,
         visited_list: int | None= None,
         parents: dict[int,int] | None=None,
-        max_depth: int | None = None) -> tuple[list[int] | None,list[int] | None]:
+        max_depth: int | None = None) -> tuple[list[int] | None,list[int] | None] | None:
     if parents is None:
         parents = {}
     if visited_list is None:
@@ -53,7 +53,7 @@ def dfs(maze: Maze, node: int = 0,
 
     if max_depth is not None:
         if max_depth <= 0:
-            return visited_list, None
+            return None
         else:
             max_depth -= 1
 
