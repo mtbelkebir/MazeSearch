@@ -11,7 +11,8 @@ def bfs(maze: Maze):
     queue = deque()
     queue.append(starting_cell)
     visited = {starting_cell}
-
+    visited_list = [starting_cell]
+    parents = {}
     while queue:
         current = queue.popleft()
         if current == destination_cell:
@@ -57,11 +58,12 @@ def __retrace_path(parents: dict[int, int]) -> list[int]:
     return path
 
 def colour_maze(maze: Maze, visited: set[int],  path: list[int] | None = None):
+# TODO : Optimiser la routine en n'affichant que les nouveaux nœuds visités au lieu de TOUT les nœuds visités
+def fill_cells(maze: Maze, cells: set[int] | list[int], color: tuple[float, float, float], delay=16):
     screen_size = pygame.display.get_window_size()
     screen_width, _ = screen_size
     cell_size = screen_width / maze.grid_length
-    gl.glColor3f(0.7, 0, 0.7)
-    for node in visited:
+    for node in cells:
         x, y = maze.get_coordinate(node)
         cell_x = x * cell_size
         cell_y = y * cell_size
@@ -73,17 +75,29 @@ def colour_maze(maze: Maze, visited: set[int],  path: list[int] | None = None):
         l3 = coords_to_glcoords((cell_x_end, cell_y_end), screen_size)
         l4 = coords_to_glcoords((cell_x, cell_y_end), screen_size)
 
+        gl.glColor3f(color[0], color[1], color[2])
         gl.glBegin(gl.GL_QUADS)
 
         gl.glVertex2f(l1[0], l1[1])
         gl.glVertex2f(l2[0], l2[1])
         gl.glVertex2f(l3[0], l3[1])
         gl.glVertex2f(l4[0], l4[1])
-
         gl.glEnd()
+        if isinstance(cells, list):
+            # À faire si et seulement si on dessine le chemin final
+            # TODO : À refactoriser car là c'est n'importe quoi
+            maze.draw()
+            pygame.display.flip()
+            pygame.time.delay(delay)
     maze.draw()
-    pygame.time.wait(16)
+    pygame.time.wait(delay)
     pygame.display.flip()
+
+def draw_path(maze: Maze, path: list[int]):
+    fill_cells(maze, path, (0, 1, 0))
+
+def draw_visited(maze: Maze, visited: set[int] | list[int]):
+    fill_cells(maze, visited, (.7, 0, .7))
 
 
 
