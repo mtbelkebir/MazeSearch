@@ -5,7 +5,7 @@ from util import coords_to_glcoords
 
 import pygame
 
-def bfs(maze: Maze):
+def bfs(maze: Maze) -> tuple[list[int], list[int]]:
     starting_cell = 0
     destination_cell = len(maze.grid[0]) - 1
     queue = deque()
@@ -26,11 +26,10 @@ def bfs(maze: Maze):
             parents[n] = current
             queue.append(n)
     path = __retrace_path(parents)
-    draw_visited(maze, visited_list)
-    draw_path(maze, path)
+    return visited_list, path
 
 
-def dfs(maze: Maze, node: int = 0, destination: int | None = None, visited=None, visited_list=None, parents=None):
+def dfs(maze: Maze, node: int = 0, destination: int | None = None, visited: set[int] | None =None, visited_list: int | None =None, parents: dict[int,int] | None=None) -> tuple[list[int], list[int]]:
     if parents is None:
         parents = {}
     if visited_list is None:
@@ -41,9 +40,8 @@ def dfs(maze: Maze, node: int = 0, destination: int | None = None, visited=None,
         visited = {node}
 
     if node == destination:
-        draw_visited(maze, visited_list)
-        draw_path(maze, __retrace_path(parents))
-        return
+        path = __retrace_path(parents)
+        return visited_list, path
 
     neighbours = maze.get_visitable_neighbours(node)
     unvisited_neighbours = [x for x in neighbours if x != -1 and x not in visited]
@@ -51,7 +49,11 @@ def dfs(maze: Maze, node: int = 0, destination: int | None = None, visited=None,
         visited.add(n)
         visited_list.append(n)
         parents[n] = node
-        dfs(maze, n, destination, visited, visited_list, parents)
+        result = dfs(maze, n, destination, visited, visited_list, parents)
+
+        # To propagate the solution found in case we call and don't find it
+        if result is not None:
+            return result
 
 
 
