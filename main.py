@@ -10,7 +10,7 @@ def main():
     pygame.init()
     window_size = 1000, 1000
 
-    screen = pygame.display.set_mode(window_size, pygame.DOUBLEBUF | pygame.OPENGL | pygame.RESIZABLE)
+    screen = pygame.display.set_mode(window_size, pygame.DOUBLEBUF | pygame.OPENGL)
 
     imgui.create_context()
     impl = PygameRenderer()
@@ -32,7 +32,7 @@ def main():
 
         imgui.new_frame()
         imgui.begin("MazeSettings", flags=imgui.WINDOW_ALWAYS_AUTO_RESIZE)
-        _, maze_size = imgui.slider_int("Maze size", maze_size, 10, 40)
+        _, maze_size = imgui.slider_int("Maze size", maze_size, 10, 50)
         generated_button_clicked = imgui.button("Generate")
         imgui.separator()
         algorithms_combo_changed, selected_algorithm = imgui.combo("Algorithm", supported_algorithms_selected_index, supported_algorithms)
