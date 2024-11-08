@@ -1,4 +1,3 @@
-import numpy as np
 import random
 
 from OpenGL.GL import *
@@ -12,7 +11,7 @@ class Maze:
         self.grid_length = grid_length
         # a.k.a the number of nodes
         self.adjacency_matrix_length = grid_length * grid_length
-        self.__adjacency_matrix = np.zeros((self.adjacency_matrix_length, self.adjacency_matrix_length))
+        self.__adjacency_matrix = [[0 for _ in range(self.adjacency_matrix_length)] for _ in range(self.adjacency_matrix_length)]
         self.__generate_maze()
 
         
