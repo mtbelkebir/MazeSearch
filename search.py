@@ -7,7 +7,7 @@ from util import coords_to_glcoords
 from constants import COLORS
 import pygame
 
-def bfs(maze: Maze) -> tuple[list[int], list[int]]:
+def bfs(maze: Maze) -> tuple[list[int], list[int] | None]:
     starting_cell = maze.starting_point
     destination_cell = maze.goal
     queue = deque()
@@ -27,6 +27,8 @@ def bfs(maze: Maze) -> tuple[list[int], list[int]]:
             visited_list.append(n)
             parents[n] = current
             queue.append(n)
+    else:
+        return visited_list, None
     path = __retrace_path(maze, parents)
     return visited_list, path
 
@@ -36,7 +38,7 @@ def dfs(maze: Maze, node: int | None = None,
         visited: set[int] | None= None,
         visited_list: int | None= None,
         parents: dict[int,int] | None=None,
-        max_depth: int | None = None) -> tuple[list[int] | None,list[int] | None] | None:
+        max_depth: int | None = None) -> tuple[list[int] ,list[int] | None] | None:
     if node is None:
         node = maze.starting_point
     if parents is None:
@@ -71,7 +73,7 @@ def dfs(maze: Maze, node: int | None = None,
             return result
 
 
-def ucs(maze: Maze):
+def ucs(maze: Maze) -> tuple[list[int], list[int] | None]:
     node = maze.starting_point
     pq = PriorityQueue()
     pq.put((0, node))
@@ -93,6 +95,7 @@ def ucs(maze: Maze):
             if n not in visited and n not in pq.queue:
                 parents[n] = node
                 pq.put((cumulated_cost + 1, n))
+    return visited_list, None
 
 
 def idfs(maze: Maze, max_depth: int | None = None, min_depth: int = 10):
