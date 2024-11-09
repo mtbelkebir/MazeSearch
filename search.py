@@ -102,10 +102,12 @@ def ucs(maze: Maze) -> tuple[list[int], list[int] | None]:
 def idfs(maze: Maze, max_depth: int | None = None, min_depth: int = 10):
     if max_depth is None:
         max_depth = maze.adjacency_matrix_length # So I guess none ?
-    for depth in range(min_depth, max_depth, 5):
+    r = None
+    for depth in range(min_depth, max_depth):
         r = dfs(maze, max_depth=depth)
-        if r is not None:
+        if r[1] is not None:
             return r
+    return r
 
 
 
