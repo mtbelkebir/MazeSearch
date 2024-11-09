@@ -3,6 +3,7 @@ import random
 from OpenGL.GL import *
 from util import coords_to_glcoords
 import pygame
+from constants import COLORS
 
 class Maze:
     def __init__(self, grid_length=10) -> None:
@@ -110,7 +111,7 @@ class Maze:
 
 
     def draw(self):
-        wall_color = [0, 0, 0]
+        wall_color = COLORS["WALL_COLOR"]
         line_thickness = 3.0
         screen_size = pygame.display.get_window_size()
         screen_width, screen_height = screen_size

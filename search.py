@@ -4,7 +4,7 @@ from models.maze import Maze
 from collections import deque
 import OpenGL.GL as gl
 from util import coords_to_glcoords
-
+from constants import COLORS
 import pygame
 
 def bfs(maze: Maze) -> tuple[list[int], list[int]]:
@@ -155,11 +155,11 @@ def fill_cells(maze: Maze, cells: set[int] | list[int], color: tuple[float, floa
     pygame.display.flip()
 
 def draw_path(maze: Maze, path: list[int]):
-    fill_cells(maze, path, (0, 1, 0), 0)
+    fill_cells(maze, path, COLORS["PATH_NODE"], 0)
     pygame.time.wait(2000)
 
 def draw_visited(maze: Maze, visited: set[int] | list[int]):
-    fill_cells(maze, visited, (.7, 0, .7))
+    fill_cells(maze, visited, COLORS["VISITED_NODE"])
 
 
 
