@@ -110,12 +110,63 @@ class Maze:
         self._goal = node
 
 
+    def clear(self):
+        self.__adjacency_matrix = [[1 for _ in range(self.adjacency_matrix_length)] for _ in range(self.adjacency_matrix_length)]
+
+    def set_node_as_obstacle(self, node: int | tuple[int, int]):
+        if isinstance(node, tuple):
+            node = self.get_node_id(node)
+
+        neighbours = self.get_neighbours(node)
+        for n in neighbours:
+            self.__adjacency_matrix[n][node] = 0
+            self.__adjacency_matrix[node][n] = 0
+
+    def clear_node(self, node: int | tuple[int, int]):
+        if isinstance(node, tuple):
+            node = self.get_node_id(node)
+
+        neighbours = self.get_neighbours(node)
+        for n in neighbours:
+            self.__adjacency_matrix[n][node] = 1
+            self.__adjacency_matrix[node][n] = 1
+
     def draw(self):
         wall_color = COLORS["WALL_COLOR"]
         line_thickness = 3.0
         screen_size = pygame.display.get_window_size()
         screen_width, screen_height = screen_size
         cell_size = screen_width / self.grid_length
+
+        # On colorie le début en bleu
+        start_x, start_y = self.get_coordinate(self.starting_point)
+        start_cell_x = start_x * cell_size
+        start_cell_y = start_y * cell_size
+        start_cell_x_end = start_cell_x + cell_size
+        start_cell_y_end = start_cell_y + cell_size
+
+        glColor3f(*COLORS["STARTING_NODE"])
+        glBegin(GL_QUADS)
+        glVertex2f(*coords_to_glcoords((start_cell_x, start_cell_y), screen_size))
+        glVertex2f(*coords_to_glcoords((start_cell_x_end, start_cell_y), screen_size))
+        glVertex2f(*coords_to_glcoords((start_cell_x_end, start_cell_y_end), screen_size))
+        glVertex2f(*coords_to_glcoords((start_cell_x, start_cell_y_end), screen_size))
+        glEnd()
+
+        # On colorie la destination en Rouge
+        goal_x, goal_y = self.get_coordinate(self.goal)
+        goal_cell_x = goal_x * cell_size
+        goal_cell_y = goal_y * cell_size
+        goal_cell_x_end = goal_cell_x + cell_size
+        goal_cell_y_end = goal_cell_y + cell_size
+
+        glColor3f(*COLORS["GOAL_NODE"])
+        glBegin(GL_QUADS)
+        glVertex2f(*coords_to_glcoords((goal_cell_x, goal_cell_y), screen_size))
+        glVertex2f(*coords_to_glcoords((goal_cell_x_end, goal_cell_y), screen_size))
+        glVertex2f(*coords_to_glcoords((goal_cell_x_end, goal_cell_y_end), screen_size))
+        glVertex2f(*coords_to_glcoords((goal_cell_x, goal_cell_y_end), screen_size))
+        glEnd()
 
         for node in range(self.adjacency_matrix_length):
             x, y = self.get_coordinate(node)
@@ -157,13 +208,4 @@ class Maze:
                 x2, y2 = coords_to_glcoords((cell_x, cell_y_end), screen_size)
                 glVertex2f(x1, y1)
                 glVertex2f(x2, y2)
-
-
             glEnd()
-
-
-
-
-class CellularMaze(Maze):
-    def __init__(self, grid_length: int=10):
-        pass

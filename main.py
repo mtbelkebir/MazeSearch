@@ -42,6 +42,10 @@ def main():
                     maze.starting_point = screen_coordinates_to_grid_coordinates(mouse_coords, window_size, maze_size)
                 elif event.key == pygame.K_z:
                     maze.goal = screen_coordinates_to_grid_coordinates(mouse_coords, window_size, maze_size)
+                elif event.key == pygame.K_w:
+                    maze.set_node_as_obstacle(screen_coordinates_to_grid_coordinates(mouse_coords, window_size, maze_size))
+                elif event.key == pygame.K_x:
+                    maze.clear_node(screen_coordinates_to_grid_coordinates(mouse_coords, window_size, maze_size))
             impl.process_event(event)
         impl.process_inputs()
 
@@ -49,6 +53,7 @@ def main():
         imgui.begin("MazeSettings", flags=imgui.WINDOW_ALWAYS_AUTO_RESIZE)
         _, maze_size = imgui.slider_int("Maze size", maze_size, 10, 50)
         generated_button_clicked = imgui.button("Generate")
+        clear_button_clicked = imgui.button("Clear")
         imgui.separator()
         algorithms_combo_changed, selected_algorithm = imgui.combo("Algorithm", supported_algorithms_selected_index, supported_algorithms)
         if algorithms_combo_changed:
@@ -65,6 +70,8 @@ def main():
             search.draw_visited(maze, visited)
             if solution is not None:
                 search.draw_path(maze, solution)
+        if clear_button_clicked:
+            maze.clear()
 
         imgui.render()
         impl.render(imgui.get_draw_data())
