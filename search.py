@@ -38,7 +38,7 @@ def dfs(maze: Maze, node: int | None = None,
         visited: set[int] | None= None,
         visited_list: int | None= None,
         parents: dict[int,int] | None=None,
-        max_depth: int | None = None) -> tuple[list[int] ,list[int] | None] | None:
+        max_depth: int | None = None) -> tuple[list[int] ,list[int] | None]:
     if node is None:
         node = maze.starting_point
     if parents is None:
@@ -56,7 +56,7 @@ def dfs(maze: Maze, node: int | None = None,
 
     if max_depth is not None:
         if max_depth <= 0:
-            return None
+            return visited_list, None
         else:
             max_depth -= 1
 
@@ -69,8 +69,9 @@ def dfs(maze: Maze, node: int | None = None,
         result = dfs(maze, n, destination, visited, visited_list, parents, max_depth)
 
         # To propagate the solution found in case we call and don't find it
-        if result is not None:
+        if result[1] is not None:
             return result
+    return visited_list, None
 
 
 def ucs(maze: Maze) -> tuple[list[int], list[int] | None]:
