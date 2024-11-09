@@ -85,16 +85,16 @@ def ucs(maze: Maze) -> tuple[list[int], list[int] | None]:
     while pq.queue:
         _, node = pq.get()
         cumulated_cost += 1
-        visited.add(node)
-        visited_list.append(node)
         if node == destination:
             path = __retrace_path(maze, parents)
             return visited_list, path
         neighbours = maze.get_visitable_neighbours(node)
-        for n in neighbours:
-            if n not in visited and n not in pq.queue:
-                parents[n] = node
-                pq.put((cumulated_cost + 1, n))
+        next_nodes = [n for n in neighbours if n not in visited and n not in pq.queue]
+        for n in next_nodes:
+            visited.add(n)
+            visited_list.append(n)
+            parents[n] = node
+            pq.put((cumulated_cost + 1, n))
     return visited_list, None
 
 
