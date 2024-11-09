@@ -1,4 +1,3 @@
-from operator import truediv
 from queue import PriorityQueue
 
 from models.maze import Maze
@@ -9,8 +8,8 @@ from util import coords_to_glcoords
 import pygame
 
 def bfs(maze: Maze) -> tuple[list[int], list[int]]:
-    starting_cell = 0
-    destination_cell = len(maze.grid[0]) - 1
+    starting_cell = maze.starting_point
+    destination_cell = maze.goal
     queue = deque()
     queue.append(starting_cell)
     visited = {starting_cell}
@@ -28,27 +27,29 @@ def bfs(maze: Maze) -> tuple[list[int], list[int]]:
             visited_list.append(n)
             parents[n] = current
             queue.append(n)
-    path = __retrace_path(parents)
+    path = __retrace_path(maze, parents)
     return visited_list, path
 
 
-def dfs(maze: Maze, node: int = 0,
+def dfs(maze: Maze, node: int | None = None,
         destination: int  | None= None,
         visited: set[int] | None= None,
         visited_list: int | None= None,
         parents: dict[int,int] | None=None,
         max_depth: int | None = None) -> tuple[list[int] | None,list[int] | None] | None:
+    if node is None:
+        node = maze.starting_point
     if parents is None:
         parents = {}
     if visited_list is None:
         visited_list = [node]
     if destination is None:
-        destination = len(maze.grid[0]) - 1
+        destination = maze.goal
     if visited is None:
         visited = {node}
 
     if node == destination:
-        path = __retrace_path(parents)
+        path = __retrace_path(maze, parents)
         return visited_list, path
 
     if max_depth is not None:
@@ -71,21 +72,21 @@ def dfs(maze: Maze, node: int = 0,
 
 
 def ucs(maze: Maze):
-    node = 0
+    node = maze.starting_point
     pq = PriorityQueue()
     pq.put((0, node))
-    destination = len(maze.grid[0]) - 1
+    destination = maze.goal
     cumulated_cost = 0
     visited = {node}
     visited_list = [node]
     parents = {}
-    while pq:
-        node = pq.get()[1]
+    while pq.queue:
+        _, node = pq.get()
         cumulated_cost += 1
         visited.add(node)
         visited_list.append(node)
         if node == destination:
-            path = __retrace_path(parents)
+            path = __retrace_path(maze, parents)
             return visited_list, path
         neighbours = maze.get_visitable_neighbours(node)
         for n in neighbours:
@@ -104,10 +105,10 @@ def idfs(maze: Maze, max_depth: int | None = None, min_depth: int = 10):
 
 
 
-def __retrace_path(parents: dict[int, int]) -> list[int]:
-    starting_cell = 0
-    goal = max(list(parents.keys()))
-    path = []
+def __retrace_path(maze: Maze, parents: dict[int, int]) -> list[int]:
+    starting_cell = maze.starting_point
+    goal = maze.goal
+    path = [goal]
 
     current = goal
     while current != starting_cell:
@@ -154,7 +155,8 @@ def fill_cells(maze: Maze, cells: set[int] | list[int], color: tuple[float, floa
     pygame.display.flip()
 
 def draw_path(maze: Maze, path: list[int]):
-    fill_cells(maze, path, (0, 1, 0))
+    fill_cells(maze, path, (0, 1, 0), 0)
+    pygame.time.wait(2000)
 
 def draw_visited(maze: Maze, visited: set[int] | list[int]):
     fill_cells(maze, visited, (.7, 0, .7))

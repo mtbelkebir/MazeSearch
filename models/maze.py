@@ -12,6 +12,8 @@ class Maze:
         # a.k.a the number of nodes
         self.adjacency_matrix_length = grid_length * grid_length
         self.__adjacency_matrix = [[0 for _ in range(self.adjacency_matrix_length)] for _ in range(self.adjacency_matrix_length)]
+        self._starting_point = 0
+        self._goal = self.adjacency_matrix_length - 1
         self.__generate_maze()
 
         
@@ -86,6 +88,26 @@ class Maze:
     def grid(self):
         return self.__adjacency_matrix
 
+    @property
+    def starting_point(self):
+        return self._starting_point
+
+    @starting_point.setter
+    def starting_point(self, node: int | tuple[int, int]):
+        if isinstance(node, tuple):
+            node = self.get_node_id(node)
+        self._starting_point = node
+
+    @property
+    def goal(self):
+        return self._goal
+
+    @goal.setter
+    def goal(self, node: int | tuple[int, int]):
+        if isinstance(node, tuple):
+            node = self.get_node_id(node)
+        self._goal = node
+
 
     def draw(self):
         wall_color = [0, 0, 0]
@@ -103,7 +125,7 @@ class Maze:
             cell_y_end = cell_y + cell_size
 
             glLineWidth(line_thickness)
-            glColor3i(wall_color[0], wall_color[1], wall_color[2])
+            glColor3i(*wall_color)
             # On dessine les murs avec chaque voisin
 
             glBegin(GL_LINES)
@@ -139,4 +161,8 @@ class Maze:
             glEnd()
 
 
-        
+
+
+class CellularMaze(Maze):
+    def __init__(self, grid_length: int=10):
+        pass

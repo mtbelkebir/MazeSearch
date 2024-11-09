@@ -6,6 +6,15 @@ import sys
 from models.maze import Maze
 import search
 
+
+def screen_coordinates_to_grid_coordinates(x: tuple[int, int], screen_size: tuple[int, int], grid_length: int) -> tuple[
+    int, int]:
+    screen_width, screen_height = screen_size
+    cell_size = screen_width / grid_length
+    grid_x = int(x[0] / cell_size)
+    grid_y = int(x[1] / cell_size)
+    return grid_x, grid_y
+
 def main():
     pygame.init()
     window_size = 1000, 1000
@@ -27,6 +36,12 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit(0)
+            elif event.type == pygame.KEYDOWN:
+                mouse_coords = pygame.mouse.get_pos()
+                if event.key == pygame.K_a:
+                    maze.starting_point = screen_coordinates_to_grid_coordinates(mouse_coords, window_size, maze_size)
+                elif event.key == pygame.K_z:
+                    maze.goal = screen_coordinates_to_grid_coordinates(mouse_coords, window_size, maze_size)
             impl.process_event(event)
         impl.process_inputs()
 
@@ -58,6 +73,9 @@ def main():
 
         if generated_button_clicked:
             maze = Maze(maze_size)
+
+
+
 
 
 if __name__ == "__main__":
