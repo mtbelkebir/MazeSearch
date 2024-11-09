@@ -21,7 +21,7 @@ def bfs(maze: Maze) -> tuple[list[int], list[int]]:
             break
  
         neighbours = maze.get_visitable_neighbours(current)
-        unvisited_neighbours = [x for x in neighbours if x != -1 and x not in visited]
+        unvisited_neighbours = [x for x in neighbours if x not in visited]
         for n in unvisited_neighbours:
             visited.add(n)
             visited_list.append(n)
@@ -59,7 +59,7 @@ def dfs(maze: Maze, node: int | None = None,
             max_depth -= 1
 
     neighbours = maze.get_visitable_neighbours(node)
-    unvisited_neighbours = [x for x in neighbours if x != -1 and x not in visited]
+    unvisited_neighbours = [x for x in neighbours if x not in visited]
     for n in unvisited_neighbours:
         visited.add(n)
         visited_list.append(n)
