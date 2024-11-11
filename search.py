@@ -124,7 +124,6 @@ def __retrace_path(maze: Maze, parents: dict[int, int]) -> list[int]:
     path.reverse()
     return path
 
-# TODO : Optimiser la routine en n'affichant que les nouveaux nœuds visités au lieu de TOUT les nœuds visités
 def fill_cells(maze: Maze, cells: set[int] | list[int], color: tuple[float, float, float], delay=16):
     screen_size = pygame.display.get_window_size()
     screen_width, _ = screen_size
@@ -150,8 +149,6 @@ def fill_cells(maze: Maze, cells: set[int] | list[int], color: tuple[float, floa
         gl.glVertex2f(l4[0], l4[1])
         gl.glEnd()
         if isinstance(cells, list):
-            # À faire si et seulement si on dessine le chemin final
-            # TODO : À refactoriser car là c'est n'importe quoi
             maze.draw()
             pygame.display.flip()
             pygame.time.delay(delay)
