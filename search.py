@@ -84,8 +84,7 @@ def ucs(maze: Maze) -> tuple[list[int], list[int] | None]:
     visited_list = [node]
     parents = {}
     while pq.queue:
-        _, node = pq.get()
-        cumulated_cost += 1
+        cumulated_cost, node = pq.get()
         if node == destination:
             path = __retrace_path(maze, parents)
             return visited_list, path
