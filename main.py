@@ -55,8 +55,11 @@ def main():
         imgui.new_frame()
         imgui.begin("MazeSettings", flags=imgui.WINDOW_ALWAYS_AUTO_RESIZE)
         _, maze_size = imgui.slider_int("Maze size", maze_size, 10, 50)
+        imgui.columns(2)
         generated_button_clicked = imgui.button("Generate")
+        imgui.next_column()
         clear_button_clicked = imgui.button("Clear")
+        imgui.columns(1)
         imgui.separator()
         algorithms_combo_changed, selected_algorithm = imgui.combo("Algorithm", supported_algorithms_selected_index, supported_algorithms)
         if algorithms_combo_changed:
