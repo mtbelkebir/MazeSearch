@@ -6,8 +6,19 @@ import pygame
 from constants import COLORS
 
 class Maze:
-    def __init__(self, grid_length=10) -> None:
+    """
+    Represents a square Maze.
 
+    The maze is represented as a graph with its adjacency matrix storing possible movements between nodes.
+
+    Each node can be represented in two ways : Its nodeID, or a tuple of integers (x,y) representing its coordinates
+    in a square grid.
+    """
+    def __init__(self, grid_length=10) -> None:
+        """
+        Creates a square maze
+        :param grid_length: The side length of the maze. Default is 10
+        """
         # We suppose a square grid
         self.grid_length = grid_length
         # a.k.a the number of nodes
@@ -19,9 +30,19 @@ class Maze:
 
         
     def get_node_id(self, pos: tuple[int, int]) -> int:
+        """
+        Returns the Node ID from its coordinates
+        :param pos: A tuple (x,y) representing the node's coordinates.
+        :return: The node's ID.
+        """
         return pos[0] * self.grid_length + pos[1]
     
     def get_coordinate(self, node: int) -> tuple[int, int]:
+        """
+        Returns a given node's coordinates from its ID.
+        :param node: The node's ID
+        :return: The node's coordinates in the grid.
+        """
         x = node // self.grid_length
         y = node % self.grid_length
         return x, y
@@ -36,7 +57,8 @@ class Maze:
         Returns the nodes that represent neighbours in final grid as a list. The neighbours are ordered clockwise.
         Adds -1 to the list if there's nothing in a direction.
 
-        `pos_or_node` can be either a tuple of (x, y) or an integer node ID.
+        :param pos_or_node: can be either a tuple of (x, y) or an integer node ID.
+        :return: The list of neighbours' node ID clockwise.
         """
         neighbours = []
         directions = [(0, -1), (1, 0), (0, 1), (-1, 0)]
@@ -62,6 +84,12 @@ class Maze:
         return neighbours
     
     def get_visitable_neighbours(self, node: tuple[int, int] | int) -> list[int]:
+        """
+        Returns the visitable neighbours of a node.
+
+        :param node: Can be either a tuple of (x, y) or an integer node ID.
+        :return: A list of visitable neighbour node IDs.
+        """
         neighours = self.get_neighbours(node)
         if isinstance(node, tuple):
             node = self.get_node_id(node)
@@ -69,6 +97,10 @@ class Maze:
 
 
     def __generate_maze(self, starting_cell: int | None = None):
+        """
+        Generates a random, perfect maze using iterative Depth-First Search
+        :param starting_cell: The starting node for the maze generation.
+        """
         if starting_cell is None:
             starting_cell = random.randint(0, self.adjacency_matrix_length - 1)
         stack = [starting_cell]
@@ -87,33 +119,66 @@ class Maze:
 
     @property
     def grid(self):
+        """
+        Returns the adjacency matrix representing the maze.
+
+        :return: The adjacency matrix.
+        """
         return self.__adjacency_matrix
 
     @property
     def starting_point(self):
+        """
+        Gets the starting point of the maze.
+
+        :return: The starting point node ID.
+        """
         return self._starting_point
 
     @starting_point.setter
     def starting_point(self, node: int | tuple[int, int]):
+        """
+        Sets the starting point of the maze
+        :param node:
+        :return: Can be either a tuple of (x, y) or the node ID.
+        """
         if isinstance(node, tuple):
             node = self.get_node_id(node)
         self._starting_point = node
 
     @property
     def goal(self):
+        """
+        Gets the goal of the maze
+
+        :return: The goal's node ID.
+        """
         return self._goal
 
     @goal.setter
     def goal(self, node: int | tuple[int, int]):
+        """
+        Sets the goal of the maze
+
+        :param node: The node ID of coordinates of the new goal.
+        """
         if isinstance(node, tuple):
             node = self.get_node_id(node)
         self._goal = node
 
 
     def clear(self):
+        """
+        Clears the Maze by removing all walls.
+        """
         self.__adjacency_matrix = [[1 for _ in range(self.adjacency_matrix_length)] for _ in range(self.adjacency_matrix_length)]
 
     def set_node_as_obstacle(self, node: int | tuple[int, int]):
+        """
+        Sets a cell as an obstacle by setting 4 walls around the corresponding node
+
+        :param node: The node ID or coordinates of the new obstacle
+        """
         if isinstance(node, tuple):
             node = self.get_node_id(node)
 
@@ -123,6 +188,11 @@ class Maze:
             self.__adjacency_matrix[node][n] = 0
 
     def clear_node(self, node: int | tuple[int, int]):
+        """
+        Clears an obstacle.
+
+        :param node: The node ID or coordinates of the obstacle.
+        """
         if isinstance(node, tuple):
             node = self.get_node_id(node)
 
@@ -132,6 +202,9 @@ class Maze:
             self.__adjacency_matrix[node][n] = 1
 
     def draw(self):
+        """
+        Draws the maze.
+        """
         wall_color = COLORS["WALL_COLOR"]
         line_thickness = 3.0
         screen_size = pygame.display.get_window_size()

@@ -8,6 +8,12 @@ from constants import COLORS
 import pygame
 
 def bfs(maze: Maze) -> tuple[list[int], list[int] | None]:
+    """
+    Performs Breadth-First Search (BFS) on the maze.
+
+    :param maze: The maze to search.
+    :return: A tuple containing the list of visited nodes and the path from the start to the goal, if found.
+    """
     starting_cell = maze.starting_point
     destination_cell = maze.goal
     queue = deque()
@@ -19,7 +25,7 @@ def bfs(maze: Maze) -> tuple[list[int], list[int] | None]:
         current = queue.popleft()
         if current == destination_cell:
             break
- 
+
         neighbours = maze.get_visitable_neighbours(current)
         unvisited_neighbours = [x for x in neighbours if x not in visited]
         for n in unvisited_neighbours:
@@ -39,6 +45,18 @@ def dfs(maze: Maze, node: int | None = None,
         visited_list: int | None= None,
         parents: dict[int,int] | None=None,
         max_depth: int | None = None) -> tuple[list[int] ,list[int] | None]:
+    """
+    Performs Depth-First Search (DFS) on the maze.
+
+    :param maze: The maze to search.
+    :param node: The current node being visited.
+    :param destination: The goal node.
+    :param visited: The set of visited nodes.
+    :param visited_list: The list of visited nodes in order.
+    :param parents: The dictionary mapping nodes to their parents.
+    :param max_depth: The maximum depth to search.
+    :return: A tuple containing the list of visited nodes and the path from the start to the goal, if found.
+    """
     if node is None:
         node = maze.starting_point
     if parents is None:
@@ -75,6 +93,12 @@ def dfs(maze: Maze, node: int | None = None,
 
 
 def ucs(maze: Maze) -> tuple[list[int], list[int] | None]:
+    """
+    Performs Uniform Cost Search (UCS) on the maze.
+
+    :param maze: The maze to search.
+    :return: A tuple containing the list of visited nodes and the path from the start to the goal, if found.
+    """
     node = maze.starting_point
     pq = PriorityQueue()
     pq.put((0, node))
@@ -99,6 +123,14 @@ def ucs(maze: Maze) -> tuple[list[int], list[int] | None]:
 
 
 def idfs(maze: Maze, max_depth: int | None = None, min_depth: int = 1):
+    """
+    Performs Iterative Deepening Depth-First Search (IDFS) on the maze.
+
+    :param maze: The maze to search.
+    :param max_depth: The maximum depth to search.
+    :param min_depth: The minimum depth to start searching.
+    :return: A tuple containing the list of visited nodes and the path from the start to the goal, if found.
+    """
     if max_depth is None:
         max_depth = maze.adjacency_matrix_length # So I guess none ?
     r = None
@@ -111,6 +143,13 @@ def idfs(maze: Maze, max_depth: int | None = None, min_depth: int = 1):
 
 
 def __retrace_path(maze: Maze, parents: dict[int, int]) -> list[int]:
+    """
+    Retraces the path from the goal to the start using the parents dictionary.
+
+    :param maze: The maze being searched.
+    :param parents: The dictionary mapping nodes to their parents.
+    :return: The path from the start to the goal.
+    """
     starting_cell = maze.starting_point
     goal = maze.goal
     path = [goal]
@@ -157,10 +196,21 @@ def fill_cells(maze: Maze, cells: set[int] | list[int], color: tuple[float, floa
     pygame.display.flip()
 
 def draw_path(maze: Maze, path: list[int]):
+    """
+    Draws the path in the maze.
+
+    :param maze: The maze being drawn.
+    :param path: The list of nodes representing the path.
+    """
     fill_cells(maze, path, COLORS["PATH_NODE"], 0)
     pygame.time.wait(2000)
 
 def draw_visited(maze: Maze, visited: set[int] | list[int]):
+    """
+    Draws the visited nodes in the maze.
+    :param maze: The maze being drawn.
+    :param visited: The set or list of visited nodes.
+    """
     fill_cells(maze, visited, COLORS["VISITED_NODE"])
 
 
