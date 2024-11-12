@@ -4,7 +4,7 @@ from OpenGL.GL import *
 from util import coords_to_glcoords
 import pygame
 from constants import COLORS
-
+import numpy as np
 class Maze:
     """
     Represents a square Maze.
@@ -23,7 +23,7 @@ class Maze:
         self.grid_length = grid_length
         # a.k.a the number of nodes
         self.adjacency_matrix_length = grid_length * grid_length
-        self.__adjacency_matrix = [[0 for _ in range(self.adjacency_matrix_length)] for _ in range(self.adjacency_matrix_length)]
+        self.__adjacency_matrix = np.zeros((self.adjacency_matrix_length, self.adjacency_matrix_length))
         self._starting_point = 0
         self._goal = self.adjacency_matrix_length - 1
         self.__generate_maze()
@@ -171,7 +171,7 @@ class Maze:
         """
         Clears the Maze by removing all walls.
         """
-        self.__adjacency_matrix = [[1 for _ in range(self.adjacency_matrix_length)] for _ in range(self.adjacency_matrix_length)]
+        self.__adjacency_matrix = np.zeros((self.adjacency_matrix_length, self.adjacency_matrix_length))
 
     def set_node_as_obstacle(self, node: int | tuple[int, int]):
         """
