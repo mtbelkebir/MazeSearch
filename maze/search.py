@@ -1,10 +1,10 @@
 from queue import PriorityQueue
 
-from models.maze import Maze
+from maze import Maze
 from collections import deque
 import OpenGL.GL as gl
-from util import coords_to_glcoords
-from constants import COLORS
+from utils import coords_to_glcoords
+from config.constants import COLORS
 import pygame
 
 def bfs(maze: Maze) -> tuple[list[int], list[int] | None]:

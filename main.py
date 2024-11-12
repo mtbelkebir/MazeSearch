@@ -3,8 +3,7 @@ import OpenGL.GL as gl
 import imgui
 import pygame
 import sys
-from models.maze import Maze
-import search
+from maze import Maze, search
 
 
 def screen_coordinates_to_grid_coordinates(

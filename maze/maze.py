@@ -1,9 +1,9 @@
 import random
 
 from OpenGL.GL import *
-from util import coords_to_glcoords
+from utils.util import coords_to_glcoords
 import pygame
-from constants import COLORS
+from config.constants import COLORS
 import numpy as np
 class Maze:
     """
@@ -171,7 +171,7 @@ class Maze:
         """
         Clears the Maze by removing all walls.
         """
-        self.__adjacency_matrix = np.zeros((self.adjacency_matrix_length, self.adjacency_matrix_length))
+        self.__adjacency_matrix = np.ones((self.adjacency_matrix_length, self.adjacency_matrix_length))
 
     def set_node_as_obstacle(self, node: int | tuple[int, int]):
         """
