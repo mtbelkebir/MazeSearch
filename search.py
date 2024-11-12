@@ -216,8 +216,8 @@ def draw_visited(maze: Maze, visited: set[int] | list[int]):
 
 
 ALGORITHMS = {
-    "DFS": lambda maze: dfs(maze),
-    "BFS": lambda maze: bfs(maze),
-    "UCS": lambda maze: ucs(maze),
-    "IDFS": lambda maze: idfs(maze),
+    "Depth-First Search": lambda maze: dfs(maze),
+    "Breadth-First Search": lambda maze: bfs(maze),
+    "Uniform Cost Search": lambda maze: ucs(maze),
+    "Iterative Depth-deepening Search": lambda maze: idfs(maze),
 }
