@@ -7,12 +7,15 @@ from models.maze import Maze
 import search
 
 
-def screen_coordinates_to_grid_coordinates(x: tuple[int, int], screen_size: tuple[int, int], grid_length: int) -> tuple[
-    int, int]:
+def screen_coordinates_to_grid_coordinates(
+        click_position: tuple[int, int],
+        screen_size: tuple[int, int],
+        grid_length: int) -> tuple[int, int]:
     screen_width, screen_height = screen_size
     cell_size = screen_width / grid_length
-    grid_x = int(x[0] / cell_size)
-    grid_y = int(x[1] / cell_size)
+    click_x, click_y = click_position
+    grid_x = int(click_x / cell_size)
+    grid_y = int(click_y / cell_size)
     return grid_x, grid_y
 
 def main():
