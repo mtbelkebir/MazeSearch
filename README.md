@@ -25,7 +25,7 @@ Intelligence, here applied in the context of solving Mazes.
 ## Usage
 Run the program using the following command:
 ```bash
-python src/main.py
+python main.py
 ```
 
 ## Features
